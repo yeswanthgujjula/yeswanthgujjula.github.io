@@ -1,39 +1,47 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Yeswanth Gujjula · Portfolio</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; background: #fafafa; }
-    h1, h2, h3 { color: #222; }
-    .project { border: 1px solid #ddd; padding: 20px; margin: 20px 0; border-radius: 10px; background: #fff; }
-    .tags { margin-top: 10px; }
-    .tag { display: inline-block; margin: 3px; padding: 3px 10px; border: 1px solid #aaa; border-radius: 12px; font-size: 0.8rem; background: #f2f2f2; }
-    pre { background: #1e1e1e; color: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto; }
-    code { font-family: Consolas, monospace; }
-    a.btn { display: inline-block; margin-top: 10px; padding: 8px 12px; border: 1px solid #333; border-radius: 6px; text-decoration: none; color: #333; }
+    body { font-family: Arial, sans-serif; margin: 32px; line-height: 1.6; background:#fafafa; color:#222; }
+    .ok { padding:10px 14px; border:1px solid #16a34a; background:#dcfce7; color:#166534; border-radius:8px; display:inline-block; }
+    h1, h2, h3 { margin: 0 0 10px; }
+    .project { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:18px; margin:18px 0; }
+    .tags { margin-top:8px; }
+    .tag { display:inline-block; border:1px solid #ddd; border-radius:999px; padding:2px 8px; margin:2px; font-size:.8rem; background:#f3f4f6; }
+    pre { background:#1f2937; color:#f9fafb; padding:14px; border-radius:10px; overflow-x:auto; }
+    code { font-family: Consolas, Menlo, monospace; }
+    a.btn { display:inline-block; padding:8px 12px; border:1px solid #111827; border-radius:8px; color:#111827; text-decoration:none; margin-top:10px; }
+    a.btn:hover { box-shadow:0 4px 12px rgba(0,0,0,.1); transform:translateY(-1px); }
   </style>
 </head>
 <body>
-  <h1>Yeswanth Gujjula</h1>
-  <p>Welcome to my portfolio 🚀 No dates here, only projects and code.</p>
+
+  <!-- Sanity check banner so you know this file loaded -->
+  <div class="ok">✅ Site loaded from <strong>index.html</strong>. If you can see this, Pages is working.</div>
+
+  <h1 style="margin-top:16px;">Yeswanth Gujjula</h1>
+  <p>Welcome to my portfolio. No dates here — only projects and code.</p>
 
   <!-- EV PROJECT -->
   <div class="project">
     <h2>🔋 EV Range Prediction & Route Planning</h2>
     <p>
-      This project predicts the driving range of electric vehicles and finds the optimal route with charging stops, 
-      using machine learning and the <strong>A*</strong> search algorithm.
+      Predicts EV range and finds optimal routes with charging stops using ML + A* search.
     </p>
     <div class="tags">
       <span class="tag">Python</span><span class="tag">Machine Learning</span><span class="tag">A*</span>
     </div>
 
-    <h3>Example Python Code:</h3>
-    <pre><code class="language-python">
+    <h3>Example Python code</h3>
+    <pre><code># Simple A* example (toy graph) for display on the site
 import heapq
 
-# A* algorithm for EV route planning
+def heuristic(a, b):
+    return abs(a - b)
+
 def astar(start, goal, graph, battery_range):
     open_set = []
     heapq.heappush(open_set, (0, start, battery_range))
@@ -44,70 +52,46 @@ def astar(start, goal, graph, battery_range):
         _, current, remaining = heapq.heappop(open_set)
 
         if current == goal:
-            path = []
+            path = [current]
             while current in came_from:
-                path.append(current)
                 current = came_from[current]
-            path.append(start)
-            return path[::-1]
+                path.append(current)
+            return list(reversed(path))
 
         for neighbor, dist in graph.get(current, []):
             if dist > remaining:
-                continue  # can't reach without charging
+                continue
             tentative_g = g_score[current] + dist
-            if tentative_g < g_score.get(neighbor, float('inf')):
+            if tentative_g &lt; g_score.get(neighbor, float('inf')):
                 came_from[neighbor] = current
                 g_score[neighbor] = tentative_g
                 f_score = tentative_g + heuristic(neighbor, goal)
                 heapq.heappush(open_set, (f_score, neighbor, battery_range - dist))
 
-def heuristic(a, b):
-    # simple straight-line estimate
-    return abs(a - b)
+graph = { 0:[(1,5),(2,10)], 1:[(2,3),(3,7)], 2:[(3,2)], 3:[] }
+print(astar(0, 3, graph, battery_range=10))</code></pre>
 
-graph = {
-    0: [(1, 5), (2, 10)],
-    1: [(2, 3), (3, 7)],
-    2: [(3, 2)],
-    3: []
-}
-
-print(astar(0, 3, graph, battery_range=10))
-    </code></pre>
-
-    <a class="btn" href="#">Project Report (coming soon)</a>
+    <!-- Download button (upload /downloads/ev-range.zip first) -->
+    <a class="btn" href="/downloads/ev-range.zip" download>⬇️ Download EV Project (ZIP)</a>
   </div>
 
-  <!-- ANOTHER PROJECT -->
+  <!-- Add more projects below -->
   <div class="project">
     <h2>📊 CI/CD Monitoring Dashboard</h2>
-    <p>
-      Real-time DevOps dashboard using AWS Lambda & CloudWatch Logs Insights. 
-      Includes a minimal React UI to track pipelines.
-    </p>
-    <div class="tags">
-      <span class="tag">AWS</span><span class="tag">React</span>
-    </div>
+    <p>Real-time DevOps dashboard using AWS Lambda & CloudWatch Logs Insights.</p>
+    <div class="tags"><span class="tag">AWS</span><span class="tag">React</span></div>
   </div>
 
-  <!-- CLIMATE PROJECT -->
   <div class="project">
     <h2>🌍 Climate Data Connectors</h2>
-    <p>
-      Retrieval-Augmented Generation (RAG) connectors for datasets like EDGAR, UNFCCC, and GFW. 
-      Helps LLMs answer questions using trusted climate data.
-    </p>
-    <div class="tags">
-      <span class="tag">Python</span><span class="tag">RAG</span><span class="tag">MCP</span>
-    </div>
+    <p>RAG connectors for EDGAR, UNFCCC, GFW to ground LLM answers in trusted data.</p>
+    <div class="tags"><span class="tag">Python</span><span class="tag">RAG</span><span class="tag">MCP</span></div>
   </div>
 
-  <h2>About Me</h2>
-  <p>
-    I’m a Data/ML Engineer passionate about analytics, AI, and climate tech. 
-    This portfolio highlights my selected projects without commit dates.
-  </p>
-  <p><strong>Contact:</strong> yeswanth@example.com · <a href="https://linkedin.com/in/your-handle">LinkedIn</a></p>
+  <h2>About</h2>
+  <p>I’m a Data/ML Engineer focused on analytics, cloud, and climate tech.</p>
+  <p><strong>Contact:</strong> yeswanth@example.com • <a href="https://linkedin.com/in/your-handle">LinkedIn</a></p>
+
 </body>
 </html>
 
